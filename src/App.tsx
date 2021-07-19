@@ -3,7 +3,7 @@ import { FunctionComponent, ChangeEvent, useCallback, useEffect, useRef, useStat
 
 import generateHUB3 from './generateHUB3';
 
-const BASE_LINK = 'https://dinaro.vuherer.com';
+const BASE_LINK = 'https://uplatimi.com';
 const STORAGE_KEY = 'dinaro_data';
 
 type Data = {

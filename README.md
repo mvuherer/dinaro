@@ -1,1 +1,1 @@
-https://dinaro.vuherer.com/
+https://uplatimi.com
