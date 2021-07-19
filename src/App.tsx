@@ -123,6 +123,11 @@ const App: FunctionComponent = () => {
               </ListGroup.Item>
             ) : null}
           </ListGroup>
+          <Card.Body>
+            <Button variant="outline-secondary" size="sm" className="w-100" href="/">
+              GENERIRAJ NOVI
+            </Button>
+          </Card.Body>
         </Card>
       );
     }
@@ -211,7 +216,7 @@ const App: FunctionComponent = () => {
         <InputGroup className="mb-3">
           <Form.Control type="text" readOnly value={generatedLink || ''} onFocus={handleLinkFocus} ref={linkInputRef} />
           <Button variant="secondary" onClick={handleCopy}>
-            Kopiraj
+            KOPIRAJ
           </Button>
         </InputGroup>
         <Form.Group className="mb-3" controlId="linkToShare"></Form.Group>
