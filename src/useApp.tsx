@@ -123,7 +123,7 @@ const useApp = (): UseAppResponse => {
   const handleGenerateLink = useCallback(() => {
     setIsLinkGenerating(true);
 
-    let keyword = `${Date.now()}-`;
+    let keyword = Date.now().toString();
 
     for (let i = 0; i < 5; i++) {
       keyword += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
