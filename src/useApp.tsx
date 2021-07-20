@@ -5,6 +5,7 @@ import generateHUB3 from './generateHUB3';
 
 const STORAGE_KEY = 'uplatimi-data';
 const QUERY_KEY = 'p';
+const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 type Data = {
   amount: string;
@@ -122,9 +123,16 @@ const useApp = (): UseAppResponse => {
   const handleGenerateLink = useCallback(() => {
     setIsLinkGenerating(true);
 
+    let keyword = `${Date.now()}-`;
+
+    for (let i = 0; i < 5; i++) {
+      keyword += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
+    }
+
     const details: { [key: string]: string } = {
       action: 'shorturl',
       format: 'json',
+      keyword,
       url: `${window.location.origin}?${QUERY_KEY}=${btoa(localStorage.getItem(STORAGE_KEY) || '')}`,
     };
 
