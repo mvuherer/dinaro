@@ -3,7 +3,6 @@ import { FunctionComponent, ChangeEvent, useCallback, useEffect, useRef, useStat
 
 import generateHUB3 from './generateHUB3';
 
-const BASE_LINK = 'https://uplatimi.com';
 const STORAGE_KEY = 'dinaro_data';
 
 type Data = {
@@ -33,7 +32,7 @@ const App: FunctionComponent = () => {
     }
   );
   const [paymentData, setPaymentData] = useState<Data | null>(null);
-  const [generatedLink, setGeneratedLink] = useState(BASE_LINK);
+  const [generatedLink, setGeneratedLink] = useState(window.location.origin);
   const [hasLoaded, setHasLoaded] = useState(false);
 
   const linkInputRef = useRef<HTMLInputElement>(null);
@@ -43,7 +42,7 @@ const App: FunctionComponent = () => {
     const params = Object.fromEntries(urlSearchParams.entries());
 
     if (params.payment) {
-      const parsedData = JSON.parse(params.payment);
+      const parsedData = JSON.parse(atob(params.payment));
 
       setPaymentData(parsedData);
       generateHUB3(parsedData);
@@ -57,7 +56,7 @@ const App: FunctionComponent = () => {
 
     localStorage.setItem(STORAGE_KEY, stringifiedData);
 
-    setGeneratedLink(`${BASE_LINK}?payment=${encodeURI(stringifiedData)}`);
+    setGeneratedLink(`${window.location.origin}?payment=${btoa(stringifiedData)}`);
 
     generateHUB3(data);
   }, [data]);
