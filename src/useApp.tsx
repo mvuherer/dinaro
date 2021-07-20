@@ -1,8 +1,10 @@
 import { FocusEvent, ChangeEvent, RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import _deburr from 'lodash/deburr';
 
 import generateHUB3 from './generateHUB3';
 
 const STORAGE_KEY = 'uplatimi-data';
+const QUERY_KEY = 'p';
 
 type Data = {
   amount: string;
@@ -55,8 +57,8 @@ const useApp = (): UseAppResponse => {
       const urlSearchParams = new URLSearchParams(window.location.search);
       const params = Object.fromEntries(urlSearchParams.entries());
 
-      if (params.payment) {
-        const parsedData = JSON.parse(atob(params.payment));
+      if (params[QUERY_KEY]) {
+        const parsedData = JSON.parse(atob(params[QUERY_KEY]));
 
         setPaymentData(parsedData);
         generateHUB3(parsedData);
@@ -72,19 +74,19 @@ const useApp = (): UseAppResponse => {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
 
-    if (!params.payment) {
-      const stringifiedData = JSON.stringify(data);
+    if (!params[QUERY_KEY]) {
+      const preparedData = _deburr(JSON.stringify(data));
 
-      localStorage.setItem(STORAGE_KEY, stringifiedData);
+      localStorage.setItem(STORAGE_KEY, preparedData);
 
-      setGeneratedLink(`${window.location.origin}?payment=${btoa(stringifiedData)}`);
+      setGeneratedLink(`${window.location.origin}?${QUERY_KEY}=${btoa(preparedData)}`);
 
       generateHUB3(data);
     }
   }, [data]);
 
   const handleAmountChange = useCallback(({ target: { value } }) => {
-    let amount = value.replace(/[^0-9.,]/gi, '');
+    let amount: string = value.replace(/[^0-9.,]/gi, '');
 
     if (amount) {
       if (amount.includes(',') || amount.includes('.')) {
@@ -96,12 +98,12 @@ const useApp = (): UseAppResponse => {
       }
     }
 
-    setData((current) => ({ ...current, amount: amount.slice(0, 15) }));
+    setData((current: Data) => ({ ...current, amount: amount.slice(0, 15) }));
   }, []);
 
   const handleTextChange = useCallback(
     (limit: number) => (event: ChangeEvent<HTMLInputElement>) => {
-      setData((current) => ({ ...current, [event.target.id]: event.target.value.slice(0, limit) }));
+      setData((current: Data) => ({ ...current, [event.target.id]: _deburr(event.target.value.slice(0, limit)) }));
     },
     []
   );
