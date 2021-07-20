@@ -125,7 +125,6 @@ const useApp = (): UseAppResponse => {
     const details: { [key: string]: string } = {
       action: 'shorturl',
       format: 'json',
-      keyword: 'test',
       url: `${window.location.origin}?${QUERY_KEY}=${btoa(localStorage.getItem(STORAGE_KEY) || '')}`,
     };
 
