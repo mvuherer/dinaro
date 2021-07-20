@@ -87,7 +87,7 @@ const App: FunctionComponent = () => {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="amount">
-            <Form.Label>Iznos</Form.Label>
+            <Form.Label>Iznos:</Form.Label>
             <Form.Control type="text" placeholder="0.00" value={data.amount} onChange={handleAmountChange} />
           </Form.Group>
           <Form.Group controlId="description">
