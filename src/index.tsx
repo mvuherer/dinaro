@@ -9,9 +9,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Container>
-      <Row className="justify-content-center p-5">
-        <Col md="6">
+    <Container className="p-3 p-sm-5">
+      <Row className="justify-content-center">
+        <Col sm="10" md="8" lg="6">
           <App />
           <canvas id="barcode" className="w-100" />
         </Col>
