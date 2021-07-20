@@ -98,9 +98,9 @@ const App: FunctionComponent = () => {
   }
 
   if (paymentData) {
-    if (paymentData.receiverName || paymentData.iban || paymentData.amount || paymentData.description) {
-      return (
-        <Card>
+    return (
+      <Card>
+        {paymentData.receiverName || paymentData.iban || paymentData.amount || paymentData.description ? (
           <ListGroup variant="flush">
             {paymentData.receiverName ? (
               <ListGroup.Item>
@@ -123,16 +123,14 @@ const App: FunctionComponent = () => {
               </ListGroup.Item>
             ) : null}
           </ListGroup>
-          <Card.Body>
-            <Button variant="outline-secondary" size="sm" className="w-100" href="/">
-              GENERIRAJ NOVI
-            </Button>
-          </Card.Body>
-        </Card>
-      );
-    }
-
-    return null;
+        ) : null}
+        <Card.Body>
+          <Button variant="outline-secondary" size="sm" className="w-100" href="/">
+            GENERIRAJ NOVI
+          </Button>
+        </Card.Body>
+      </Card>
+    );
   }
 
   return (
