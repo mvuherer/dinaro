@@ -23,10 +23,13 @@ type UseAppResponse = {
   generatedLink: string;
   handleAmountChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleCopy: () => void;
+  handleGenerateLink: () => void;
   handleLinkFocus: (event: FocusEvent<HTMLInputElement>) => void;
   handleTextChange: (limit: number) => (event: ChangeEvent<HTMLInputElement>) => void;
-  hasError: boolean;
-  hasLoaded: boolean;
+  hasFailedToGenerateLink: boolean;
+  hasPageLoaded: boolean;
+  isLinkGenerating: boolean;
+  isLinkInvalid: boolean;
   linkInputRef: RefObject<HTMLInputElement>;
   paymentData: Data | null;
 };
@@ -47,8 +50,10 @@ const useApp = (): UseAppResponse => {
   );
   const [paymentData, setPaymentData] = useState<Data | null>(null);
   const [generatedLink, setGeneratedLink] = useState(window.location.origin);
-  const [hasError, setHasError] = useState(false);
-  const [hasLoaded, setHasLoaded] = useState(false);
+  const [isLinkGenerating, setIsLinkGenerating] = useState(false);
+  const [isLinkInvalid, setIsLinkInvalid] = useState(false);
+  const [hasFailedToGenerateLink, setHasFailedToGenerateLink] = useState(false);
+  const [hasPageLoaded, setHasPageLoaded] = useState(false);
 
   const linkInputRef = useRef<HTMLInputElement>(null);
 
@@ -64,10 +69,10 @@ const useApp = (): UseAppResponse => {
         generateHUB3(parsedData);
       }
     } catch (error) {
-      setHasError(true);
+      setIsLinkInvalid(true);
     }
 
-    setHasLoaded(true);
+    setHasPageLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -75,11 +80,9 @@ const useApp = (): UseAppResponse => {
     const params = Object.fromEntries(urlSearchParams.entries());
 
     if (!params[QUERY_KEY]) {
-      const preparedData = _deburr(JSON.stringify(data));
+      localStorage.setItem(STORAGE_KEY, _deburr(JSON.stringify(data)));
 
-      localStorage.setItem(STORAGE_KEY, preparedData);
-
-      setGeneratedLink(`${window.location.origin}?${QUERY_KEY}=${btoa(preparedData)}`);
+      setGeneratedLink('');
 
       generateHUB3(data);
     }
@@ -116,15 +119,51 @@ const useApp = (): UseAppResponse => {
     document.execCommand('copy');
   }, [linkInputRef]);
 
+  const handleGenerateLink = useCallback(() => {
+    setIsLinkGenerating(true);
+
+    const details: { [key: string]: string } = {
+      action: 'shorturl',
+      format: 'json',
+      keyword: 'test',
+      url: `${window.location.origin}?${QUERY_KEY}=${btoa(localStorage.getItem(STORAGE_KEY) || '')}`,
+    };
+
+    const formBody = [];
+    for (const property in details) {
+      const encodedKey = encodeURIComponent(property);
+      const encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+
+    fetch('https://uplatimi.com/u/yourls-api.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+      body: formBody.join('&'),
+    })
+      .then((response) => {
+        setHasFailedToGenerateLink(false);
+
+        return response.json().then((response) => setGeneratedLink(response.shorturl));
+      })
+      .catch(() => setHasFailedToGenerateLink(true))
+      .then(() => setIsLinkGenerating(false));
+  }, []);
+
   return {
     data,
     generatedLink,
     handleAmountChange,
     handleCopy,
+    handleGenerateLink,
     handleLinkFocus,
     handleTextChange,
-    hasError,
-    hasLoaded,
+    hasFailedToGenerateLink,
+    hasPageLoaded,
+    isLinkGenerating,
+    isLinkInvalid,
     linkInputRef,
     paymentData,
   };
