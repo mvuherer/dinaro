@@ -5,7 +5,7 @@ import generateHUB3 from './generateHUB3';
 
 const STORAGE_KEY = 'uplatimi-data';
 const QUERY_KEY = 'p';
-const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 type Data = {
   amount: string;
