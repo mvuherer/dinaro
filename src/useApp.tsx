@@ -6,7 +6,6 @@ import generateHUB3 from './generateHUB3';
 const STORAGE_KEY = 'uplatimi-data';
 const QUERY_KEY = 'p';
 const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-const SALT_LENGHT = 3;
 
 type Data = {
   amount: string;
@@ -125,15 +124,13 @@ const useApp = (): UseAppResponse => {
     setIsLinkGenerating(true);
 
     let keyword = '';
+    const dateNow = Date.now().toString().split('');
 
-    for (let index = 0; index < SALT_LENGHT; index++) {
-      keyword += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
-    }
-
-    keyword += Date.now().toString();
-
-    for (let index = 0; index < SALT_LENGHT; index++) {
-      keyword += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
+    for (let index = 0; index < dateNow.length; index++) {
+      if (index % 2 === 0) {
+        keyword += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
+      }
+      keyword += dateNow[index];
     }
 
     const details: { [key: string]: string } = {
