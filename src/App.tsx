@@ -3,7 +3,7 @@ import { FunctionComponent, ChangeEvent, useCallback, useEffect, useRef, useStat
 
 import generateHUB3 from './generateHUB3';
 
-const STORAGE_KEY = 'dinaro_data';
+const STORAGE_KEY = 'uplatimi-data';
 
 type Data = {
   amount: string;
