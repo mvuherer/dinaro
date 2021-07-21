@@ -52,21 +52,19 @@ const App: FunctionComponent = () => {
               <strong>Opis:</strong> {paymentData.description}
             </ListGroup.Item>
           ) : null}
-          {paymentData.amount ? (
-            <ListGroup.Item>
-              <Form.Group className="d-flex align-items-baseline" controlId="amount">
-                <Form.Label>
-                  <strong>Iznos:</strong>&nbsp;
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="0.00"
-                  value={paymentData.amount}
-                  onChange={handlePaymentAmountChange}
-                />
-              </Form.Group>
-            </ListGroup.Item>
-          ) : null}
+          <ListGroup.Item>
+            <Form.Group className="d-flex align-items-baseline" controlId="amount">
+              <Form.Label>
+                <strong>Iznos:</strong>&nbsp;
+              </Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="0.00"
+                value={paymentData.amount}
+                onChange={handlePaymentAmountChange}
+              />
+            </Form.Group>
+          </ListGroup.Item>
         </ListGroup>
         <Card.Body>
           <Button variant="outline-secondary" size="sm" className="w-100" href="/">
