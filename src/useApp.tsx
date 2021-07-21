@@ -26,6 +26,7 @@ type UseAppResponse = {
   handleCopy: () => void;
   handleGenerateLink: () => void;
   handleLinkFocus: (event: FocusEvent<HTMLInputElement>) => void;
+  handlePaymentAmountChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleTextChange: (limit: number) => (event: ChangeEvent<HTMLInputElement>) => void;
   hasFailedToGenerateLink: boolean;
   hasPageLoaded: boolean;
@@ -33,6 +34,22 @@ type UseAppResponse = {
   isLinkInvalid: boolean;
   linkInputRef: RefObject<HTMLInputElement>;
   paymentData: Data | null;
+};
+
+const resolveAmount = (value: string) => {
+  let amount = value.replace(/[^0-9.,]/gi, '');
+
+  if (amount) {
+    if (amount.includes(',') || amount.includes('.')) {
+      const parts = amount.split(/[,.]/);
+
+      amount = `${parseInt(parts[0], 10)}.${parts[1] ? parts[1].slice(0, 2) : ''}`;
+    } else {
+      amount = parseInt(amount, 10).toString();
+    }
+  }
+
+  return amount;
 };
 
 const useApp = (): UseAppResponse => {
@@ -67,7 +84,6 @@ const useApp = (): UseAppResponse => {
         const parsedData = JSON.parse(atob(params[QUERY_KEY]));
 
         setPaymentData(parsedData);
-        generateHUB3(parsedData);
       }
     } catch (error) {
       setIsLinkInvalid(true);
@@ -75,6 +91,12 @@ const useApp = (): UseAppResponse => {
 
     setHasPageLoaded(true);
   }, []);
+
+  useEffect(() => {
+    if (paymentData) {
+      generateHUB3(paymentData);
+    }
+  }, [paymentData]);
 
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
@@ -89,26 +111,23 @@ const useApp = (): UseAppResponse => {
     }
   }, [data]);
 
-  const handleAmountChange = useCallback(({ target: { value } }) => {
-    let amount: string = value.replace(/[^0-9.,]/gi, '');
-
-    if (amount) {
-      if (amount.includes(',') || amount.includes('.')) {
-        const parts = amount.split(/[,.]/);
-
-        amount = `${parseInt(parts[0], 10)}.${parts[1] ? parts[1].slice(0, 2) : ''}`;
-      } else {
-        amount = parseInt(amount, 10).toString();
-      }
-    }
-
-    setData((current: Data) => ({ ...current, amount: amount.slice(0, 15) }));
-  }, []);
+  const handleAmountChange = useCallback(
+    ({ target: { value } }) => setData((current: Data) => ({ ...current, amount: resolveAmount(value).slice(0, 15) })),
+    []
+  );
 
   const handleTextChange = useCallback(
     (limit: number) => (event: ChangeEvent<HTMLInputElement>) => {
       setData((current: Data) => ({ ...current, [event.target.id]: _deburr(event.target.value.slice(0, limit)) }));
     },
+    []
+  );
+
+  const handlePaymentAmountChange = useCallback(
+    ({ target: { value } }) =>
+      setPaymentData((current: Data | null) =>
+        current ? { ...current, amount: resolveAmount(value).slice(0, 15) } : current
+      ),
     []
   );
 
@@ -170,6 +189,7 @@ const useApp = (): UseAppResponse => {
     handleCopy,
     handleGenerateLink,
     handleLinkFocus,
+    handlePaymentAmountChange,
     handleTextChange,
     hasFailedToGenerateLink,
     hasPageLoaded,

@@ -11,6 +11,7 @@ const App: FunctionComponent = () => {
     handleCopy,
     handleGenerateLink,
     handleLinkFocus,
+    handlePaymentAmountChange,
     handleTextChange,
     hasFailedToGenerateLink,
     hasPageLoaded,
@@ -35,30 +36,38 @@ const App: FunctionComponent = () => {
   if (paymentData) {
     return (
       <Card>
-        {paymentData.receiverName || paymentData.iban || paymentData.amount || paymentData.description ? (
-          <ListGroup variant="flush">
-            {paymentData.receiverName ? (
-              <ListGroup.Item>
-                <strong>Za:</strong> {paymentData.receiverName}
-              </ListGroup.Item>
-            ) : null}
-            {paymentData.iban ? (
-              <ListGroup.Item>
-                <strong>IBAN:</strong> {paymentData.iban}
-              </ListGroup.Item>
-            ) : null}
-            {paymentData.amount ? (
-              <ListGroup.Item>
-                <strong>Iznos:</strong> {paymentData.amount} HRK
-              </ListGroup.Item>
-            ) : null}
-            {paymentData.description ? (
-              <ListGroup.Item>
-                <strong>Opis:</strong> {paymentData.description}
-              </ListGroup.Item>
-            ) : null}
-          </ListGroup>
-        ) : null}
+        <ListGroup variant="flush">
+          {paymentData.receiverName ? (
+            <ListGroup.Item>
+              <strong>Za:</strong> {paymentData.receiverName}
+            </ListGroup.Item>
+          ) : null}
+          {paymentData.iban ? (
+            <ListGroup.Item>
+              <strong>IBAN:</strong> {paymentData.iban}
+            </ListGroup.Item>
+          ) : null}
+          {paymentData.description ? (
+            <ListGroup.Item>
+              <strong>Opis:</strong> {paymentData.description}
+            </ListGroup.Item>
+          ) : null}
+          {paymentData.amount ? (
+            <ListGroup.Item>
+              <Form.Group className="d-flex align-items-baseline" controlId="amount">
+                <Form.Label>
+                  <strong>Iznos:</strong>&nbsp;
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="0.00"
+                  value={paymentData.amount}
+                  onChange={handlePaymentAmountChange}
+                />
+              </Form.Group>
+            </ListGroup.Item>
+          ) : null}
+        </ListGroup>
         <Card.Body>
           <Button variant="outline-secondary" size="sm" className="w-100" href="/">
             GENERIRAJ NOVI
