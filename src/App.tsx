@@ -64,6 +64,9 @@ const App: FunctionComponent = () => {
                 onChange={handlePaymentAmountChange}
               />
             </Form.Group>
+            <small className="text-muted text-center d-block">
+              Slobodno promijeni iznos ako nije ispravan, bar kod će se ažurirat.
+            </small>
           </ListGroup.Item>
         </ListGroup>
         <Card.Body>
@@ -96,6 +99,9 @@ const App: FunctionComponent = () => {
           <Form.Group className="mb-3" controlId="amount">
             <Form.Label>Iznos:</Form.Label>
             <Form.Control type="text" placeholder="0.00" value={data.amount} onChange={handleAmountChange} />
+            <Form.Text className="text-muted text-center">
+              Možeš pustiti prazno, neka si sami upišu iznos koji trebaju platiti.
+            </Form.Text>
           </Form.Group>
           <Form.Group controlId="description">
             <Form.Label>Opis:</Form.Label>

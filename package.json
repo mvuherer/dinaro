@@ -1,5 +1,5 @@
 {
-  "name": "dinaro",
+  "name": "uplatimi",
   "version": "0.1.0",
   "dependencies": {
     "@infinumjs/eslint-config-react-ts": "^2.4.0",
