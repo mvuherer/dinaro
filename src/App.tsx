@@ -65,13 +65,13 @@ const App: FunctionComponent = () => {
               />
             </Form.Group>
             <small className="text-muted text-center d-block">
-              Slobodno promijeni iznos ako nije ispravan, bar kod će se ažurirat.
+              Slobodno promijeni iznos ako nije ispravan, barkod će se ažurirat.
             </small>
           </ListGroup.Item>
         </ListGroup>
         <Card.Body>
           <Button variant="outline-secondary" size="sm" className="w-100" href="/">
-            Želim generirat novi bar kod s drugim detaljima!
+            Želim generirat novi barkod s drugim detaljima!
           </Button>
         </Card.Body>
       </Card>
