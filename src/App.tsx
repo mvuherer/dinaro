@@ -71,7 +71,7 @@ const App: FunctionComponent = () => {
         </ListGroup>
         <Card.Body>
           <Button variant="outline-secondary" size="sm" className="w-100" href="/">
-            Želim generirat novi s drugim IBAN-om
+            Želim generirat novi bar kod s drugim detaljima!
           </Button>
         </Card.Body>
       </Card>
