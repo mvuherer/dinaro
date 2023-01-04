@@ -49,11 +49,21 @@ const App: FunctionComponent = () => {
           ) : null}
           {paymentData.description ? (
             <ListGroup.Item>
-              <strong>Opis:</strong> {paymentData.description}
+              <Form.Group controlId="description">
+                <Form.Label>
+                  <strong>Opis:</strong>&nbsp;
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="-"
+                  value={paymentData.description}
+                  onChange={handleTextChange(35)}
+                />
+              </Form.Group>
             </ListGroup.Item>
           ) : null}
           <ListGroup.Item>
-            <Form.Group className="d-flex align-items-baseline" controlId="amount">
+            <Form.Group controlId="amount">
               <Form.Label>
                 <strong>Iznos:</strong>&nbsp;
               </Form.Label>
@@ -64,8 +74,10 @@ const App: FunctionComponent = () => {
                 onChange={handlePaymentAmountChange}
               />
             </Form.Group>
+          </ListGroup.Item>
+          <ListGroup.Item>
             <small className="text-muted text-center d-block">
-              Slobodno promijeni iznos ako nije ispravan, barkod će se ažurirat.
+              Slobodno promijeni iznos ili opis ako nije ispravan, barkod će se ažurirat.
             </small>
           </ListGroup.Item>
         </ListGroup>

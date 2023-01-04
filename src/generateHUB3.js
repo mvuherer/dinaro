@@ -6,7 +6,7 @@ const generateHUB3 = (data) => {
 
   const code =
     'HRVHUB30\n' +
-    'HRK\n' +
+    'EUR\n' +
     `${(amount[1] ? `${amount[0]}${amount[1]}` : `${amount[0]}00`).padStart(15, '0')}\n` +
     `\n` +
     `\n` +
