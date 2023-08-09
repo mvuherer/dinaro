@@ -1,1 +1,1 @@
-https://uplatimi.com
+https://uplatimi.online

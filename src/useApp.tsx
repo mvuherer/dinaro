@@ -166,7 +166,7 @@ const useApp = (): UseAppResponse => {
       formBody.push(encodedKey + '=' + encodedValue);
     }
 
-    fetch('https://uplatimi.com/na/yourls-api.php', {
+    fetch('https://uplatimi.online/na/yourls-api.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
